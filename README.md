@@ -1,7 +1,7 @@
 # Welcome to the Colosseum
 
 Here I'm developing a turn-based, strategic combat game. The main application is React, and Auth0 have been implemented to allow users register and save their progress through the game.
-Fetching true Dungeons & Dragons enemies and equipment from the D&D Api, you will have to face sucessives waves of each time stronger foes. Survive and you will earn gold and fame to buy bigger swords, more potions amd grow stronger. 
+Fetching true Dungeons & Dragons enemies and equipment from the D&D Api, you will have to face sucessive waves of each time stronger foes. Survive and you will earn gold and fame to buy bigger swords, more potions amd grow stronger. 
 
 How long will you be able to survive?
 
