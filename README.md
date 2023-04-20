@@ -7,13 +7,14 @@ How long will you be able to survive?
 
 ## To Do List / Priorities
 
-[x] Combat engine - simple fights can be disputed between simplified models of player and enemies
-[ ] Define characters with a variety of stats and abilities to add complexity to the system
-[ ] Fetch equipment and enemies from D&D API according to the level of the player
-[ ] Integrate a shop feature where to spend your hard earned credits for power ups
-[ ] Allow authentication and save the game state linked to the user in MongoDB
-[ ] A creative and neat user interface
-[ ] To balance potential game-breaking mechanics(overpowered characters and so)
+
+- [x] Combat engine - simple fights can be disputed between simplified models of player and enemies
+- [x] Define characters with a variety of stats and abilities to add complexity to the system
+- [ ] Fetch equipment and enemies from D&D API according to the level of the player
+- [ ] Integrate a shop feature where to spend your hard earned credits for power ups
+- [ ] Allow authentication and save the game state linked to the user in MongoDB
+- [ ] A creative and neat user interface
+- [ ] To balance potential game-breaking mechanics(overpowered characters and so)
 
 -----------------------------------------------------------------
 
