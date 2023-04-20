@@ -33,7 +33,8 @@ function Engine() {
       setPlayerMana(playerMana + 1);
       setPlayerConfuse(false);
     } else {
-      setEnemies(chosenEnemy.enemyHealth - (enemyBlock ? damage / 2 : damage));
+      chosenEnemy.health =
+        chosenEnemy.health - (enemyBlock ? damage / 2 : damage);
       setPlayerHealth(playerHealth - (playerPoison ? 2 : 0));
       setEnemyBlock(false);
     }
@@ -41,7 +42,7 @@ function Engine() {
   }
 
   function attackPlayer(currentEnemy) {
-    const damage = Math.floor(Math.random() * 8) + 10; // Daño entre 1 y 8
+    const damage = currentEnemy.attack; // Daño entre 1 y 8
     if (enemyStun) {
       setPlayerHealth(playerHealth - 0);
       setEnemyStun(false);
@@ -78,6 +79,12 @@ function Engine() {
   }
 
   useEffect(() => {
+    if (playerHealth <= 0) {
+      setIsCombatOver(true);
+    } else if (enemies.length >= 1) {
+      let remainingEnemies = enemies.filter((enemy) => enemy.health > 0);
+      setEnemies(remainingEnemies);
+    }
     if (enemies.length === 0) {
       setIsCombatOver(true);
     } else if (playerTurn === false) {
@@ -92,7 +99,7 @@ function Engine() {
       }
       console.log(enemies);
     }
-  }, [playerTurn, currentEnemyTurn]);
+  }, [playerTurn]);
   /* if (playerHealth <= 0) {
       setIsCombatOver(true);
     } else {
@@ -104,7 +111,7 @@ function Engine() {
   }, [enemies]); */
 
   return (
-    <div>
+    <div className="battleScreen">
       <h2>Jugador</h2>
       <p>Salud: {playerHealth}</p>
       <p>Mana: {playerMana}</p>
@@ -115,20 +122,24 @@ function Engine() {
       <button onClick={block}>Bloquear</button> */}
       {/* <button onClick={stun}>Aturdir</button> */}
       <h2>Enemigos</h2>
-      {Array.isArray(enemies) &&
-        enemies.map((enemy, i) => (
-          <div key={i}>
-            <button onClick={() => handleEnemyClick(enemies[i])} key={enemy.id}>
-              Atacar {enemy.name}
-            </button>
-            <p>Salud: {enemy.health}</p>
-            <p>Ataque: {enemy.attack}</p>
-            <p>Bloquea: {enemyBlock ? "Si" : "No"}</p>
-            <p>Envenenado: {enemyPoison ? "Si" : "No"}</p>
-            <p>Aturdido: {enemyStun ? "Si" : "No"}</p>
-          </div>
-        ))}
-
+      <section className="enemies">
+        {Array.isArray(enemies) &&
+          enemies.map((enemy, i) => (
+            <div key={i}>
+              <button
+                onClick={() => handleEnemyClick(enemies[i])}
+                key={enemy.id}
+              >
+                Atacar {enemy.name}
+              </button>
+              <p>Salud: {enemy.health}</p>
+              <p>Ataque: {enemy.attack}</p>
+              <p>Bloquea: {enemyBlock ? "Si" : "No"}</p>
+              <p>Envenenado: {enemyPoison ? "Si" : "No"}</p>
+              <p>Aturdido: {enemyStun ? "Si" : "No"}</p>
+            </div>
+          ))}
+      </section>
       {isCombatOver ? <p>El combate ha terminado</p> : null}
     </div>
   );
