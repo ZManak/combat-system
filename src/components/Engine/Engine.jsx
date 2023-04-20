@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Engine() {
-  const [playerHealth, setPlayerHealth] = useState(70);
-  const [enemyHealth, setEnemyHealth] = useState(50);
+  const [playerHealth, setPlayerHealth] = useState(500);
   const [playerMana, setPlayerMana] = useState(20);
+  const [playerAttack, setPlayerAttack] = useState(10);
+  const [playerDefense, setPlayerDefense] = useState(5);
   const [playerBlock, setPlayerBlock] = useState(false);
   const [playerPoison, setPlayerPoison] = useState(false);
   const [playerConfuse, setPlayerConfuse] = useState(false);
@@ -11,8 +12,18 @@ function Engine() {
   const [enemyPoison, setEnemyPoison] = useState(false);
   const [enemyStun, setEnemyStun] = useState(false);
 
-  function attackEnemy() {
-    const damage = Math.floor(Math.random() * 10) + 1; // Daño entre 1 y 10
+  const [enemies, setEnemies] = useState([
+    { id: 1, name: "Orco", health: 50, attack: 10 },
+    { id: 2, name: "Goblin", health: 30, attack: 8 },
+    { id: 3, name: "Troll", health: 80, attack: 12 },
+  ]);
+  const [playerTurn, setPlayerTurn] = useState(false);
+  const [currentEnemyTurn, setCurrentEnemyTurn] = useState(0);
+  const [isCombatOver, setIsCombatOver] = useState(false);
+  //console.log(enemies);
+
+  function attackEnemy(chosenEnemy) {
+    const damage = Math.floor(Math.random() * 10) + playerAttack; // Daño entre 1 y 10
     if (playerConfuse) {
       setPlayerHealth(
         Math.random() < 0.5
@@ -22,13 +33,15 @@ function Engine() {
       setPlayerMana(playerMana + 1);
       setPlayerConfuse(false);
     } else {
-      setEnemyHealth(enemyHealth - (enemyBlock ? damage / 2 : damage));
+      setEnemies(chosenEnemy.enemyHealth - (enemyBlock ? damage / 2 : damage));
       setPlayerHealth(playerHealth - (playerPoison ? 2 : 0));
       setEnemyBlock(false);
     }
+    setPlayerTurn(false);
   }
-  function attackPlayer() {
-    const damage = Math.floor(Math.random() * 8) + 1; // Daño entre 1 y 8
+
+  function attackPlayer(currentEnemy) {
+    const damage = Math.floor(Math.random() * 8) + 10; // Daño entre 1 y 8
     if (enemyStun) {
       setPlayerHealth(playerHealth - 0);
       setEnemyStun(false);
@@ -46,7 +59,7 @@ function Engine() {
     }
   }
 
-  function stun() {
+  /*   function stun() {
     if (playerMana >= 5 && enemyStun === false && enemyBlock === true) {
       setPlayerMana(playerMana - 5);
       setEnemyHealth(enemyHealth - (Math.floor(Math.random() * 3) + 1));
@@ -54,11 +67,41 @@ function Engine() {
       setEnemyBlock(false);
       setEnemyStun(true);
     }
-  }
+  } */
 
   function block() {
     setPlayerBlock(true);
   }
+
+  function handleEnemyClick(enemy) {
+    attackEnemy(enemy);
+  }
+
+  useEffect(() => {
+    if (enemies.length === 0) {
+      setIsCombatOver(true);
+    } else if (playerTurn === false) {
+      const currentEnemy = enemies[currentEnemyTurn];
+      const enemyAction = Math.floor(Math.random() * 2); // 0 = Atacar, 1 = Bloquear
+      if (enemyAction === 0) {
+        attackPlayer(currentEnemy);
+        setPlayerTurn(true);
+      } else {
+        setEnemyBlock(true);
+        setPlayerTurn(true);
+      }
+      console.log(enemies);
+    }
+  }, [playerTurn, currentEnemyTurn]);
+  /* if (playerHealth <= 0) {
+      setIsCombatOver(true);
+    } else {
+      setCurrentEnemyTurn((currentEnemyTurn + 1) % enemies.length);
+    }
+    console.log("Turno del jugador: ", playerTurn);
+    console.log("Turno del enemigo: ", currentEnemyTurn);
+    console.log("Enemigos: ", enemies);
+  }, [enemies]); */
 
   return (
     <div>
@@ -67,17 +110,26 @@ function Engine() {
       <p>Mana: {playerMana}</p>
       <p>Envenenado: {playerPoison ? "Si" : "No"}</p>
       <p>Bloquea: {playerBlock ? "Si" : "No"}</p>
-      {playerConfuse ? <p>Confundido</p> : null}
-      <button onClick={attackEnemy}>Atacar</button>
-      <button onClick={block}>Bloquear</button>
-      <button onClick={stun}>Aturdir</button>
-      <h2>Enemigo</h2>
-      <p>Salud: {enemyHealth}</p>
-      <p>Envenenado: {enemyPoison ? "Si" : "No"}</p>
-      <p>Bloquea: {enemyBlock ? "Si" : "No"}</p>
-      <p>Aturdido: {enemyStun ? "Si" : "No"}</p>
-      <button onClick={attackPlayer}>Atacar</button>
-      <button onClick={() => setEnemyBlock(true)}>Bloquear</button>
+      {/* {playerConfuse ? <p>Confundido</p> : null}
+      <button onClick={attackEnemy(currentEnemy)}>Atacar</button>
+      <button onClick={block}>Bloquear</button> */}
+      {/* <button onClick={stun}>Aturdir</button> */}
+      <h2>Enemigos</h2>
+      {Array.isArray(enemies) &&
+        enemies.map((enemy, i) => (
+          <div key={i}>
+            <button onClick={() => handleEnemyClick(enemies[i])} key={enemy.id}>
+              Atacar {enemy.name}
+            </button>
+            <p>Salud: {enemy.health}</p>
+            <p>Ataque: {enemy.attack}</p>
+            <p>Bloquea: {enemyBlock ? "Si" : "No"}</p>
+            <p>Envenenado: {enemyPoison ? "Si" : "No"}</p>
+            <p>Aturdido: {enemyStun ? "Si" : "No"}</p>
+          </div>
+        ))}
+
+      {isCombatOver ? <p>El combate ha terminado</p> : null}
     </div>
   );
 }
