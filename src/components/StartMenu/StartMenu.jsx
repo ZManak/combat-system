@@ -1,13 +1,15 @@
 import React from "react";
 
 const StartMenu = ({ start }) => {
+  const setStats = () => {
+  
   return (
     <div className="start">
       <h1>Start Menu</h1>
-      <section className="login">
-        <h2>Register</h2>
-        <p>...to save your progress, only username needed!</p>
+      <section className="playerInfo">
+        <h2>Who is your warrior?</h2>
         <form>
+          <label htmlFor="user">Name:</label>
           <input
             type="text"
             name="user"
@@ -17,21 +19,14 @@ const StartMenu = ({ start }) => {
             placeholder="Name your warrior"
           />
           <br />
-          <button>Enter</button>
-        </form>
-        <h2>Or load your game</h2>
-        <p>...if you already have an account</p>
-        <form>
-          <input
-            type="text"
-            name="user"
-            id="user"
-            cols="30"
-            rows="10"
-            placeholder="Your warrior's name"
-          />
+          <label htmlFor="class">...a brave...</label>
+          <select name="class" id="class">
+            <option value="warrior">Warrior</option>
+            <option value="mage">Mage</option>
+            <option value="rogue">Rogue</option>
+          </select>
           <br />
-          <button>Enter</button>
+          <input type="submit" value="SET" onClick={setStats()}/>
         </form>
       </section>
       <button onClick={() => start("combat")}>Start Game</button>
