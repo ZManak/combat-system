@@ -19,3 +19,7 @@ How long will you be able to survive?
 -----------------------------------------------------------------
 
 It is not a short task and not only a game, but a challenge to put into practice all the knowledge and skills I have learnt these last months of Bootcamp, as it covers great part of the technologies we have been introduce too. There is no better way of improving yourself than doing what you love. Or at least not funnier.
+
+The very first prototype of combat. It won't be as easy as this.
+
+![prototipo](https://firebasestorage.googleapis.com/v0/b/fir-cloud-storage-69672.appspot.com/o/Sin%20t%C3%ADtulo.jpg?alt=media&token=c59b2151-e4bd-45e4-97d7-faa6893d6cf0)
