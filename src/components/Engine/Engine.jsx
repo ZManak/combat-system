@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Engine() {
+function Engine({ end }) {
   const [playerHealth, setPlayerHealth] = useState(500);
   const [playerMana, setPlayerMana] = useState(20);
   const [playerAttack, setPlayerAttack] = useState(10);
@@ -140,7 +140,9 @@ function Engine() {
             </div>
           ))}
       </section>
-      {isCombatOver ? <p>El combate ha terminado</p> : null}
+      {isCombatOver ? (
+        <button onClick={() => end("gameOver")}>Retry</button>
+      ) : null}
     </div>
   );
 }
